@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <p>Bienvenue sur Leboncoin, {{ user.username }} !</p>
+
+    <p>Afin de confirmer votre compte, veuillez cliquer sur le lien suivant : <p>
+    <button class="btn btn-primary">salut</button>
+    <br>
+    <br>
+    <a href="{{ link }}">Cliquez ici pour valider votre compte</a>
+{% endblock %}

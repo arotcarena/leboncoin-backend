@@ -1,0 +1,70 @@
+{% extends "layout/default.html.twig" %}
+
+{% block title %}Se connecter - leboncoin{% endblock %}
+
+{% block navbar %}
+    {% include "security/_login_navbar.html.twig" %}
+{% endblock %}
+
+{% block content %}
+
+
+<div style="border-color: white; border-style: solid; border-width: 1px; border-radius: 10px; box-shadow: 3px 1px 6px 2px grey; width: 420px; padding: 30px; margin: auto; margin-top: 50px;">
+
+
+    <h5 class="mt-4" style="text-align: center;">Bonjour !</h5>
+
+    <p style="text-align: center; font-size: 0.8em;">Connectez-vous pour découvrir toutes nos fonctionnalités.</p>
+
+
+    <br>
+
+    {{ form_start(form) }}
+
+        {% if form._token2FA is defined %}
+            {{ form_row(form.show_username, {
+                'label': 'E-mail'
+            })}}
+            {{ form_row(form.show_password, {
+                'label': 'Mot de passe'
+            })}}
+            {{ form_row(form._token2FA, {
+                'label': 'Code de confirmation'
+            })}}
+        {% endif %}
+
+        {{ form_row(form._username, {
+            'label': 'E-mail'
+        }) }}
+        
+        {{ form_row(form._password, {
+            'label': 'Mot de passe'
+        }) }}
+
+        {{ form_row(form._remember_me, {
+            'label': 'Se souvenir de moi'
+        }) }}
+
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn mt-3" style="background-color: blue; color: white; font-weight: bold;">Se connecter</button>
+        </div>
+
+    {{ form_end(form) }}
+
+  
+
+        {# If you want to control the URL the user is redirected to on success
+            <input type="hidden" name="_target_path" value="/account"/> #}
+        
+        
+
+        <div style="font-size: 0.8em; text-align: center;" class="mt-4">Envie de nous rejoindre ?<a class="ms-2" style="text-decoration: none;" href="{{ path('security_register') }}">Créer un compte</a></div>
+</div>
+
+   
+    <div style="color: green;">
+        <div class="mb-4">simone.descamps@pasquier.com <br> password</div>
+        <div>jean@gmail.com <br> jean64</div>
+    </div>
+
+{% endblock %}

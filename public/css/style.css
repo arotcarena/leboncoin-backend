@@ -1,0 +1,48 @@
+.nav-link {
+    color: black!important;
+}
+
+.nav-link:hover{
+    border-bottom: solid orange;
+}
+
+
+.underlined{
+    border-bottom: solid orange;
+}
+
+i.product-cartIndicator.bi-heart-fill {
+    font-size: 1.3em; 
+    color: orange;
+}
+
+i.product-cartIndicator.bi-heart {
+    font-size: 1.3em;
+    color: grey;
+}
+
+.img-mini {
+    width: 60px;
+    height: 50px;
+}
+
+.img-mini:hover {
+    cursor: pointer;
+    border: solid grey 1px;
+}
+
+.img-mini.is-selected {
+    border: solid orange 6px;
+}
+
+
+.form-field-invalid {
+    border: solid red 1px!important;
+    color: red!important;
+}
+
+#comment-form-content-error {
+    color: red; 
+    margin-top: 0px; 
+    margin-bottom: 10px;
+}

@@ -1,0 +1,115 @@
+{% extends "layout/default.html.twig" %}
+
+{% block title %}Dépôt d'annonce - leboncoin{% endblock %}
+
+{% block my_js %}
+    <script src="/script/product/show.js" type="module" defer></script>
+{% endblock %}
+
+{% block content %}
+
+    
+    {# fil d'ariane #}
+    <p><a style="text-decoration: none;" href="{{ path('home_index') }}">Accueil</a>
+        > 
+        <a style="text-decoration: none;" href="{{ path('product_index', {'category': product.category.name}) }}">{{ product.category.name }}</a>
+        > 
+        <a style="text-decoration: none;" href="{{path('product_index', {'city': product.city}) }}">{{ product.city }}</a>
+        > {{ product.title }}
+    </p>
+
+
+    <div class="row">
+        <div class="col-7">
+            {# photo à la une #}
+            {% if product.firstPicture is not same as null %}
+                <img    
+                    id="img-first" style="width: 80%; max-height: 400px;" 
+                    src=" {{ vich_uploader_asset(product.firstPicture, 'uploadedFile') | imagine_filter('my_first') }}"
+                >
+            {% else %}
+                <img src="{{ '/images/products/lorem.jpg' | imagine_filter('my_first') }} ">
+            {% endif %}
+
+            <div class="row img-mini-container">
+                {% for picture in product.pictures %}
+                <div class="col-1 img-mini-button">
+                    <img 
+                        class="img-mini {% if picture is same as product.firstPicture %}is-selected{% endif %}"
+                        src="{{ vich_uploader_asset(picture, 'uploadedFile') | imagine_filter('my_mini') }}" 
+                        data-bigimg="{{ vich_uploader_asset(picture, 'uploadedFile') | imagine_filter('my_first') }}"
+                    >
+                </div>
+                {% endfor %}
+            </div>
+
+            <h4 class="mt-4">{{ product.title }}</h4>
+            <p style="font-size: 1.5em; color: orange; font-weight: bold;">{{ product.price | price_formater }}</p>
+            <p>{{ product.createdAt | date_formater }}</p>
+            <hr>
+            <h5>Description</h5>
+            <p>{{ product.description }}</p>
+            <hr>
+            <p><i class="bi bi-geo-alt-fill"></i><span style="font-size: 1.1em; font-weight: bold;"> {{ product.city }}</span> ({{ product.postalCode }})</p>
+            <hr>
+
+            <div class="col-4">
+                {% include "user/_user_card.html.twig" %}
+            </div>
+            <p style="font-size: 0.9em;"><i class="bi bi-person"></i> Membre depuis ...
+                <br>
+                <i class="bi bi-clock"></i> Dernière réponse en moins de ...</p>
+            
+        </div>
+        {% if product.user is not same as app.user %}
+            <div class="col">
+                {# card user #}
+                <div style="border-color: white; border-style: solid; border-width: 1px; border-radius: 3px; box-shadow: 5px 2px 10px 3px grey; width: 300px; padding: 10px;">
+                    {% include "user/_user_card.html.twig" %}
+                    
+                    <hr>
+
+                    <p style="font-size: 0.9em;"><i class="bi bi-clock"></i> Dernière réponse en moins de ...</p>
+                    <div class="d-grid gap-2">
+                        <a style="background-color: orange; color: white; font-weight: bold;" class="btn" type="button">Acheter</a>
+                        <a href="{{ path('message_new', {'product_id': product.id})}} " style="font-weight: bold;" class="btn btn-primary" type="button">Message</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-7">
+            <h4>Commentaires</h4>
+            {% include "product/comment/_user_card.html.twig" %}
+            {% include "product/comment/_comment_form.html.twig" %}
+            <div id="comment-list">
+                {# commentaires #}
+            </div>
+        </div>
+
+        {# API infinitePagination #}
+        <div 
+            id="infinite-pagination"
+            data-endpoint="{{ 'https://localhost:8000' ~ path('comment_loadPagination', {
+                id: product.id
+            }) }}"
+            data-container="#comment-list"
+            data-template="#comment-card-template"
+            data-correspondance='{"user": ".comment-user", "content": ".comment-content", "createdAt": ".comment-createdAt"}'
+            data-limit="15"
+            style="max-width: 700px; text-align: center;"
+        >
+            <div class="spinner-border" role="status"></div>
+        </div>
+    </div>
+
+<template id="comment-card-template">
+    {% include "product/comment/_comment_card.html.twig" %}
+</template>
+
+{% endblock %}

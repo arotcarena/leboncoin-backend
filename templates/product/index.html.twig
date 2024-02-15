@@ -1,0 +1,55 @@
+{% extends "layout/default.html.twig" %}
+
+{% block title %}Recherche - leboncoin{% endblock %}
+
+{% block my_js %}
+    <script src="/script/product/index.js" type="module" defer></script>
+{% endblock %}
+
+{% block content %}
+
+
+    {% include "product/_search_filters.html.twig" %}
+
+    
+    <h4 class="mb-4">Annonces{% if search_filter.qSearch is not null %} "{{ search_filter.qSearch }}"{% endif %} : {% if search_filter.city is not null %}{{ search_filter.city }}{% else %}Toute la France{% endif %}</h4>
+    
+
+    {% if no_results %}
+        <p>Désolé, nous n'avons pas ça sous la main !</p>
+    {% else %}
+        {% include "product/_sort_filter.html.twig" %}
+    {% endif %}
+
+    
+
+    <div id="product-list">
+        {# les produits sont insérés ici en js #}
+    </div>
+
+
+    {# API infinitePagination #}
+    <div 
+        id="infinite-pagination"
+        data-endpoint="{{ 'https://localhost:8000' ~ path('product_loadPagination', {
+            category: app.request.get('category'),
+            qSearch: app.request.get('qSearch'),
+            city: app.request.get('city')
+        }) }}"
+        data-container="#product-list"
+        data-template="#product-card-template"
+        data-itemname="product"
+        data-limit="5"
+        data-sort=""
+        style="max-width: 700px; text-align: center;"
+    >
+        <div class="spinner-border" role="status"></div>
+    </div>
+
+
+    <template id="product-card-template">
+        {% include "product/_product_card.html.twig" %}
+    </template>
+
+
+{% endblock %}
