@@ -1,6 +1,0 @@
-.env
-/vendor
-/var
-/src/Config.php
-/public/images
-/public/media
